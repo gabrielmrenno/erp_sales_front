@@ -11,3 +11,9 @@ export interface User {
   updatedAt: Date
   deletedAt: Date | null
 }
+
+export interface ICreateUser {
+  name: string
+  username: string
+  role: string
+}

@@ -3,8 +3,8 @@
     <v-layout class="bg-[#F9F9EE] h-screen">
       <NavBar />
       <v-main class="my-8 mx-10">
-        <HeaderComponent />
-        <main>
+        <HeaderComponent class="mb-8" />
+        <main class="h-[80%]">
           <RouterView></RouterView>
         </main>
       </v-main>

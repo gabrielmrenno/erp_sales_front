@@ -1,5 +1,5 @@
 <template>
-  <header class="flex justify-between mt-8">
+  <header class="flex justify-between">
     <div class="flex gap-4">
       <v-btn
         variant="outlined"
