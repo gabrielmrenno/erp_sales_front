@@ -17,3 +17,9 @@ export interface ICreateUser {
   username: string
   role: string
 }
+
+export interface IUpdateUser {
+  id: string
+  name: string
+  role: string
+}

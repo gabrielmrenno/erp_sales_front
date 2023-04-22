@@ -16,7 +16,7 @@
       fixed-header
       :height="tableHeight"
       :loading="isLoadingData"
-      @click:row="goToUserDetails"
+      @click:row="(_, { item }) => goToUserDetails(item)"
     >
       <template v-slot:item.actions>
         <div class="flex justify-center gap-7 text-[#555]">
@@ -74,9 +74,9 @@ function resizeTable() {
   screenHeight.value = window.innerHeight
 }
 
-function goToUserDetails() {
+function goToUserDetails(item: any) {
   // TODO: get user id and pass as params
-  router.push({ name: 'UserDetails', params: { id: 1 } })
+  router.push({ name: 'UserDetails', params: { id: item.value } })
 }
 
 function handleFilterUpdate(filterValue: 'active' | 'disabled') {

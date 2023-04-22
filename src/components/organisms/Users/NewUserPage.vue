@@ -1,9 +1,5 @@
 <template>
-  <header class="flex items-center">
-    <v-icon icon="mdi-chevron-left" class="mr-2" :size="36" @click="goBack"></v-icon>
-    <TitleComponent>Novo usuário</TitleComponent>
-  </header>
-  <v-divider class="border-opacity-100 mx" color="#DDD"></v-divider>
+  <FormHeader header-title="Novo usuário" />
 
   <section class="flex h-full items-center justify-center">
     <v-form @submit.prevent="submitCreateUserForm" class="max-w-sm w-full justify-center">
@@ -40,18 +36,14 @@ import { useRouter } from 'vue-router'
 import { createUser } from '@/repositories/user'
 
 import InputComponent from '@/components/atoms/InputComponent.vue'
-import TitleComponent from '@/components/atoms/TitleComponent.vue'
+import FormHeader from '@/components/molecules/FormHeader.vue'
 
 const router = useRouter()
 
 const username = ref('')
 const name = ref('')
-const role = ref('')
+const role = ref<string>()
 const isLoading = ref(false)
-
-function goBack() {
-  router.back()
-}
 
 async function submitCreateUserForm() {
   isLoading.value = true

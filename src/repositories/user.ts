@@ -1,4 +1,4 @@
-import type { User, ICreateUser } from '@/dtos/user'
+import type { User, ICreateUser, IUpdateUser } from '@/dtos/user'
 import { useClient } from './axiosClient'
 
 interface IChangePasswordParams {
@@ -23,6 +23,18 @@ export async function getUserList(filter: 'active' | 'disabled'): Promise<User[]
 
 export async function createUser({ name, role, username }: ICreateUser): Promise<User[]> {
   const response = await useClient().post(`/users`, { name, username, role })
+
+  return response.data
+}
+
+export async function getUser(id: string): Promise<User> {
+  const response = await useClient().get(`/users/user/${id}`)
+
+  return response.data
+}
+
+export async function updateUser({ id, name, role }: IUpdateUser): Promise<User> {
+  const response = await useClient().put(`/users/user/${id}`, { name, role })
 
   return response.data
 }
