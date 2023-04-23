@@ -16,6 +16,8 @@ import NewProductPage from '@/components/organisms/NewProductPage.vue'
 
 import OrdersPage from '@/components/organisms/OrdersPage.vue'
 import CustomersPage from '@/components/organisms/CustomersPage.vue'
+import { UsersRoles } from '@/utils/enum'
+import { hasPermission } from '@/utils/permissions'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,76 +25,139 @@ const router = createRouter({
     {
       path: '/',
       name: 'Login',
-      component: LoginPage
+      component: LoginPage,
+      meta: {
+        protected: false
+      }
     },
     {
       path: '/trocar-senha',
       name: 'ResetPassword',
-      component: ResetPassword
+      component: ResetPassword,
+      meta: {
+        protected: true,
+        permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+      }
     },
     {
       path: '/painel',
       name: 'Panel',
       component: PanelPage,
+      meta: {
+        protected: true,
+        permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+      },
       children: [
         {
           path: 'produtos',
           name: 'Products',
           component: ProductsPage,
+          meta: {
+            protected: true,
+            permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+          },
           children: [
             {
               path: '',
               name: 'ProductsList',
-              component: ProductsList
+              component: ProductsList,
+              meta: {
+                protected: true,
+                permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+              }
             },
             {
               path: 'novo',
               name: 'NewProduct',
-              component: NewProductPage
+              component: NewProductPage,
+              meta: {
+                protected: true,
+                permissions: [UsersRoles.ADMIN]
+              }
             }
           ]
         },
         {
           path: 'pedidos',
           name: 'Orders',
-          component: OrdersPage
+          component: OrdersPage,
+          meta: {
+            protected: true,
+            permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+          }
         },
         {
           path: 'perfil',
           name: 'Profile',
-          component: ChangePasswordPage
+          component: ChangePasswordPage,
+          meta: {
+            protected: true,
+            permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+          }
         },
         {
           path: 'usuarios',
           name: 'Users',
           component: UserPage,
+          meta: {
+            protected: true,
+            permissions: [UsersRoles.ADMIN]
+          },
           children: [
             {
               path: '',
               name: 'UsersList',
-              component: UsersListPage
+              component: UsersListPage,
+              meta: {
+                protected: true,
+                permissions: [UsersRoles.ADMIN]
+              }
             },
             {
               path: 'novo',
               name: 'NewUser',
-              component: NewUserPage
+              component: NewUserPage,
+              meta: {
+                protected: true,
+                permissions: [UsersRoles.ADMIN]
+              }
             },
             {
               path: ':id',
               name: 'UserDetails',
               component: UserDetailsPage,
-              props: true
+              props: true,
+              meta: {
+                protected: true,
+                permissions: [UsersRoles.ADMIN]
+              }
             }
           ]
         },
         {
           path: 'customers',
           name: 'Customers',
-          component: CustomersPage
+          component: CustomersPage,
+          meta: {
+            protected: true,
+            permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+          }
         }
       ]
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  const permissions = to.meta.permissions as string[]
+
+  if (to.meta.protected) {
+    if (!hasPermission(permissions)) {
+      return next({ name: 'Login' })
+    }
+  }
+
+  return next()
 })
 
 export default router

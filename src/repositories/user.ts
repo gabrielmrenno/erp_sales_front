@@ -2,11 +2,10 @@ import type { User, ICreateUser, IUpdateUser } from '@/dtos/user'
 import { useClient } from './axiosClient'
 
 interface IChangePasswordParams {
-  id: string
   password: string
 }
 
-export async function changePassword({ password, id }: IChangePasswordParams) {
+export async function changePassword({ password }: IChangePasswordParams) {
   const response = await useClient().patch(`/users/user/update-password`, {
     password
   })

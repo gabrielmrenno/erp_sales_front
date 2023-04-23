@@ -39,7 +39,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { getLocalStorage } from '@/repositories/axiosClient'
 import { changePassword } from '@/repositories/user'
 
 import InputComponent from '@/components/atoms/InputComponent.vue'
@@ -61,9 +60,7 @@ async function submitLoginForm() {
   }
   isLoading.value = true
   try {
-    const { idUser } = getLocalStorage()
-
-    await changePassword({ password: newPassword.value, id: idUser })
+    await changePassword({ password: newPassword.value })
 
     router.back()
   } catch (error) {

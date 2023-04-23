@@ -17,7 +17,7 @@ export function setLocalStorage(data: ISignInReturn) {
 }
 
 export function getLocalStorage(): ISignInReturn {
-  const localStorageData = JSON.parse(localStorage.getItem('user') ?? '')
+  const localStorageData = JSON.parse(localStorage.getItem('user') || '{}')
   return localStorageData
 }
 

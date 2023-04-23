@@ -54,7 +54,6 @@ import { changePassword } from '@/repositories/user'
 import TitleComponent from '@/components/atoms/TitleComponent.vue'
 import ParagraphComponent from '@/components/atoms/ParagraphComponent.vue'
 import InputComponent from '@/components/atoms/InputComponent.vue'
-import { getLocalStorage } from '@/repositories/axiosClient'
 
 const router = useRouter()
 
@@ -71,9 +70,7 @@ async function submitLoginForm() {
   }
   isLoading.value = true
   try {
-    const { idUser } = getLocalStorage()
-
-    const data = await changePassword({ password: newPassword.value, id: idUser })
+    await changePassword({ password: newPassword.value })
 
     router.push({ name: 'Panel' })
   } catch (error) {
