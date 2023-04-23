@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { notify } from '@kyvg/vue3-notification'
 
 import { changePassword } from '@/repositories/user'
 
@@ -61,6 +62,12 @@ async function submitLoginForm() {
   isLoading.value = true
   try {
     await changePassword({ password: newPassword.value })
+
+    notify({
+      title: 'Success',
+      text: 'Senha alterada com sucesso',
+      type: 'success'
+    })
 
     router.back()
   } catch (error) {

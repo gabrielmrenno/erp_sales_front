@@ -2,7 +2,7 @@
   <v-dialog v-model="showConfirmDeleteModal" :width="360" persistent>
     <ConfirmActionModal
       title="Deletar Usuário"
-      text="Deseja deletar o usuário admin?"
+      :text="`Deseja deletar o usuário '${userReturned.name}'?`"
       @close-modal="showConfirmDeleteModal = false"
       @confirm-action="deleteUserFunction"
     />
@@ -11,7 +11,7 @@
   <v-dialog v-model="showResetPasswordModal" :width="360" persistent>
     <ConfirmActionModal
       title="Resetar senha"
-      text="Deseja resetar a senha do usuário admin?"
+      :text="`Deseja resetar a senha do usuário '${userReturned.name}'?`"
       @close-modal="showConfirmDeleteModal = false"
       @confirm-action="resetPassword"
     />
@@ -69,6 +69,7 @@
 <script setup lang="ts">
 import { ref, watchEffect, defineProps } from 'vue'
 import { useRouter } from 'vue-router'
+import { notify } from '@kyvg/vue3-notification'
 
 import { getUser, updateUser, deleteUser, resetUserPassword } from '@/repositories/user'
 
@@ -76,6 +77,7 @@ import InputComponent from '@/components/atoms/InputComponent.vue'
 import FormHeader from '@/components/molecules/FormHeader.vue'
 import ParagraphComponent from '@/components/atoms/ParagraphComponent.vue'
 import ConfirmActionModal from '@/components/molecules/ConfirmActionModal.vue'
+import type { User } from '@/dtos/user'
 
 const props = defineProps({
   id: {
@@ -92,12 +94,14 @@ const isSubmitLoading = ref(false)
 const showConfirmDeleteModal = ref(false)
 const showResetPasswordModal = ref(false)
 
+let userReturned: User
+
 const router = useRouter()
 
 watchEffect(async () => {
   isLoading.value = true
   try {
-    const userReturned = await getUser(props.id)
+    userReturned = await getUser(props.id)
     name.value = userReturned.name
     role.value = userReturned.role
     username.value = userReturned.username
@@ -117,6 +121,12 @@ async function updateUserDetails() {
       role: role.value === 'Administrador' ? 'ADMIN' : 'SELLER'
     })
 
+    notify({
+      title: 'Success',
+      text: 'Usuário atualizado com sucesso',
+      type: 'success'
+    })
+
     router.back()
   } catch (error) {
     console.log(error)
@@ -126,15 +136,37 @@ async function updateUserDetails() {
 }
 
 async function deleteUserFunction() {
-  await deleteUser(props.id)
-  showConfirmDeleteModal.value = false
-  router.back()
+  try {
+    await deleteUser(props.id)
+    showConfirmDeleteModal.value = false
+
+    notify({
+      title: 'Success',
+      text: 'Usuário deletado com sucesso',
+      type: 'success'
+    })
+
+    router.back()
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 async function resetPassword() {
-  await resetUserPassword(props.id)
-  showResetPasswordModal.value = false
-  router.back()
+  try {
+    await resetUserPassword(props.id)
+    showResetPasswordModal.value = false
+
+    notify({
+      title: 'Success',
+      text: 'Senha resetada com sucesso',
+      type: 'success'
+    })
+
+    router.back()
+  } catch (error) {
+    console.log(error)
+  }
 }
 </script>
 

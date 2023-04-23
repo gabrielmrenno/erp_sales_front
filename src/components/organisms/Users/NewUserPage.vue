@@ -32,6 +32,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { notify } from '@kyvg/vue3-notification'
 
 import { createUser } from '@/repositories/user'
 
@@ -52,6 +53,12 @@ async function submitCreateUserForm() {
       username: username.value,
       name: name.value,
       role: role.value === 'Administrador' ? 'ADMIN' : 'SELLER'
+    })
+
+    notify({
+      title: 'Success',
+      text: 'Usuário criado com sucesso',
+      type: 'success'
     })
 
     router.back()

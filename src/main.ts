@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import '@mdi/font/css/materialdesignicons.css'
+import Notifications from '@kyvg/vue3-notification'
 
 // Vuetify
 import 'vuetify/styles'
@@ -29,6 +30,6 @@ const vuetify = createVuetify({
 // setupClient(import.meta.env.BACK_URL)
 setupClient('http://localhost:3333')
 
-app.use(router).use(vuetify)
+app.use(router).use(vuetify).use(Notifications)
 
 app.mount('#app')

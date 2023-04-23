@@ -1,5 +1,6 @@
 <template>
   <main>
+    <notifications class="my-notification" position="bottom center" />
     <RouterView />
   </main>
 </template>
@@ -12,3 +13,12 @@ const { token } = JSON.parse(stringData)
 
 setBearerAuthorization(token)
 </script>
+
+<style>
+.my-notification .success {
+  color: #555;
+
+  background-color: #fff112;
+  border-left: 5px solid #c9be2d;
+}
+</style>
