@@ -7,7 +7,7 @@ interface IChangePasswordParams {
 }
 
 export async function changePassword({ password, id }: IChangePasswordParams) {
-  const response = await useClient().patch(`/users/user/${id}/update-password`, {
+  const response = await useClient().patch(`/users/user/update-password`, {
     password
   })
 
@@ -37,4 +37,16 @@ export async function updateUser({ id, name, role }: IUpdateUser): Promise<User>
   const response = await useClient().put(`/users/user/${id}`, { name, role })
 
   return response.data
+}
+
+export async function deleteUser(id: string) {
+  const response = await useClient().delete(`/users/user/${id}`)
+
+  return response
+}
+
+export async function resetUserPassword(id: string) {
+  const response = await useClient().patch(`/users/user/${id}/reset-password`)
+
+  return response
 }

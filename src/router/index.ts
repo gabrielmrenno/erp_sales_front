@@ -8,6 +8,7 @@ import UserPage from '@/components/organisms/Users/UsersPage.vue'
 import UsersListPage from '@/components/organisms/Users/UsersListPage.vue'
 import NewUserPage from '@/components/organisms/Users/NewUserPage.vue'
 import UserDetailsPage from '@/components/organisms/Users/UserDetailsPage.vue'
+import ChangePasswordPage from '@/components/organisms/Users/ChangePasswordPage.vue'
 
 import ProductsPage from '@/components/organisms/ProductsPage.vue'
 import ProductsList from '@/components/organisms/ProductsList.vue'
@@ -55,6 +56,11 @@ const router = createRouter({
           path: 'pedidos',
           name: 'Orders',
           component: OrdersPage
+        },
+        {
+          path: 'perfil',
+          name: 'Profile',
+          component: ChangePasswordPage
         },
         {
           path: 'usuarios',

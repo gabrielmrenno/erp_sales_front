@@ -37,7 +37,7 @@
           type="submit"
           :loading="isLoading"
         >
-          Entrar
+          Redefinir senha
         </v-btn>
       </v-form>
     </div>
