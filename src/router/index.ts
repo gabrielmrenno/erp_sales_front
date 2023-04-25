@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
+import { UsersRoles } from '@/utils/enum'
+import { hasPermission } from '@/utils/permissions'
+
 import LoginPage from '@/views/LoginPage.vue'
 import ResetPassword from '@/views/ResetPassword.vue'
 import PanelPage from '@/views/PanelPage.vue'
@@ -15,9 +18,11 @@ import ProductsList from '@/components/organisms/ProductsList.vue'
 import NewProductPage from '@/components/organisms/NewProductPage.vue'
 
 import OrdersPage from '@/components/organisms/OrdersPage.vue'
-import CustomersPage from '@/components/organisms/CustomersPage.vue'
-import { UsersRoles } from '@/utils/enum'
-import { hasPermission } from '@/utils/permissions'
+
+import CustomersPage from '@/components/organisms/Customers/CustomersPage.vue'
+import CustomersListPage from '@/components/organisms/Customers/CustomersListPage.vue'
+import NewCustomerPage from '@/components/organisms/Customers/NewCustomerPage.vue'
+import CustomerDetailsPage from '@/components/organisms/Customers/CustomerDetailsPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -135,13 +140,43 @@ const router = createRouter({
           ]
         },
         {
-          path: 'customers',
+          path: 'clientes',
           name: 'Customers',
           component: CustomersPage,
           meta: {
             protected: true,
             permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
-          }
+          },
+          children: [
+            {
+              path: '',
+              name: 'CustomersList',
+              component: CustomersListPage,
+              meta: {
+                protected: true,
+                permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+              }
+            },
+            {
+              path: 'novo',
+              name: 'NewCustomer',
+              component: NewCustomerPage,
+              meta: {
+                protected: true,
+                permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+              }
+            },
+            {
+              path: ':id',
+              name: 'CustomerDetails',
+              component: CustomerDetailsPage,
+              props: true,
+              meta: {
+                protected: true,
+                permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+              }
+            }
+          ]
         }
       ]
     }

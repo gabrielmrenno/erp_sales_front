@@ -56,7 +56,7 @@ async function submitCreateUserForm() {
     })
 
     notify({
-      title: 'Success',
+      title: 'Successo',
       text: 'Usuário criado com sucesso',
       type: 'success'
     })

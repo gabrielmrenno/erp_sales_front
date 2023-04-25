@@ -4,7 +4,7 @@
       <NavBar />
       <v-main class="my-8 mx-10">
         <HeaderComponent class="mb-8" />
-        <main class="h-[80%]">
+        <main class="h-full max-w-full">
           <RouterView></RouterView>
         </main>
       </v-main>

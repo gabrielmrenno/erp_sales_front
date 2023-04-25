@@ -38,7 +38,7 @@
 
       <v-list-item
         router-link
-        :to="{ name: 'Customers' }"
+        :to="{ name: 'CustomersList' }"
         exact-active-class="v-list-item--active"
         prepend-icon="mdi-storefront"
         title="Clientes"
