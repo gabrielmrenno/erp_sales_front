@@ -1,7 +1,11 @@
 <template>
   <FormHeader header-title="Novo usuário" />
 
-  <section class="flex h-full items-center justify-center">
+  <section
+    class="flex mt-6 items-center justify-center"
+    :style="{ height: contentHeight }"
+    v-resize="resizeTable"
+  >
     <v-form @submit.prevent="submitCreateUserForm" class="max-w-sm w-full justify-center">
       <v-label>Nome</v-label>
       <InputComponent placeholder="Digite o nome" v-model="name"></InputComponent>
@@ -30,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { notify } from '@kyvg/vue3-notification'
 
@@ -45,6 +49,13 @@ const username = ref('')
 const name = ref('')
 const role = ref<string>()
 const isLoading = ref(false)
+const screenHeight = ref(window.innerHeight)
+
+function resizeTable() {
+  screenHeight.value = window.innerHeight
+}
+
+const contentHeight = computed(() => `${screenHeight.value - 266}px`)
 
 async function submitCreateUserForm() {
   isLoading.value = true

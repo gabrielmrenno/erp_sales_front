@@ -1,7 +1,7 @@
 <template>
   <FormHeader header-title="Novo Cliente" />
 
-  <form class="flex flex-col w-full items-end" @submit.prevent="submitCreateCustomer">
+  <form class="flex flex-col w-full items-center" @submit.prevent="submitCreateCustomer">
     <div class="overflow-y-auto" :style="{ height: contentHeight }" v-resize="resizeTable">
       <section class="w-full flex mt-6">
         <div class="w-1/2 h-full">

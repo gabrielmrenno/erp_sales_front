@@ -1,7 +1,11 @@
 <template>
   <FormHeader :header-title="`Editar Senha`" />
 
-  <section class="flex h-full items-center justify-center">
+  <section
+    class="flex h-full items-center justify-center"
+    :style="{ height: contentHeight }"
+    v-resize="resizeTable"
+  >
     <v-form @submit.prevent="submitLoginForm" class="max-w-sm w-full justify-center">
       <v-label>Nova senha</v-label>
       <InputComponent
@@ -36,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { notify } from '@kyvg/vue3-notification'
 
@@ -52,6 +56,13 @@ const newPassword = ref('')
 const repeatNewPassword = ref('')
 const isLoading = ref(false)
 const isInvalidFormSubmit = ref(false)
+const screenHeight = ref(window.innerHeight)
+
+function resizeTable() {
+  screenHeight.value = window.innerHeight
+}
+
+const contentHeight = computed(() => `${screenHeight.value - 266}px`)
 
 async function submitLoginForm() {
   isInvalidFormSubmit.value = false
