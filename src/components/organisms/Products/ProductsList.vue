@@ -80,7 +80,7 @@ function resizeTable() {
 }
 
 function goToCustomerDetails(item: any) {
-  router.push({ name: 'CustomerDetails', params: { id: String(item.value.code) } })
+  router.push({ name: 'ProductDetails', params: { id: Number(item.value.code) } })
 }
 
 watchEffect(async () => {

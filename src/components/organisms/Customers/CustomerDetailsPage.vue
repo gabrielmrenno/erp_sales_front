@@ -1,8 +1,8 @@
 <template>
   <v-dialog v-model="showConfirmDeleteModal" :width="360" persistent>
     <ConfirmActionModal
-      title="Deletar Usuário"
-      :text="`Deseja deletar o usuário '${customerDetails.name}'?`"
+      title="Deletar Cliente"
+      :text="`Deseja deletar o cliente '${customerDetails.name}'?`"
       @close-modal="showConfirmDeleteModal = false"
       @confirm-action="deleteCustomerFunction"
     />
@@ -232,8 +232,6 @@ const props = defineProps({
     required: true
   }
 })
-
-console.log(props.id)
 
 const customerDetails = ref<Customer>({} as Customer)
 const screenHeight = ref<number>(0)

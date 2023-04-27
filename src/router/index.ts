@@ -16,6 +16,7 @@ import ChangePasswordPage from '@/components/organisms/Users/ChangePasswordPage.
 import ProductsPage from '@/components/organisms/Products/ProductsPage.vue'
 import ProductsList from '@/components/organisms/Products/ProductsList.vue'
 import NewProductPage from '@/components/organisms/Products/NewProductPage.vue'
+import ProductDetailsPage from '@/components/organisms/Products/ProductDetailsPage.vue'
 
 import OrdersPage from '@/components/organisms/OrdersPage.vue'
 
@@ -75,6 +76,16 @@ const router = createRouter({
               path: 'novo',
               name: 'NewProduct',
               component: NewProductPage,
+              meta: {
+                protected: true,
+                permissions: [UsersRoles.ADMIN]
+              }
+            },
+            {
+              path: ':id',
+              name: 'ProductDetails',
+              component: ProductDetailsPage,
+              props: true,
               meta: {
                 protected: true,
                 permissions: [UsersRoles.ADMIN]

@@ -23,10 +23,11 @@ export interface ICreateProductInfo {
 }
 
 export interface IUpdateProductInfoDTO {
-  name?: string
-  group?: string
-  price?: number
-  weight?: number
-  description?: string
-  unit?: 'FD' | 'SC'
+  code: number
+  name: string
+  group: string
+  price: number
+  weight: number
+  description: string
+  unit: 'FD' | 'SC'
 }
