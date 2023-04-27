@@ -13,9 +13,9 @@ import NewUserPage from '@/components/organisms/Users/NewUserPage.vue'
 import UserDetailsPage from '@/components/organisms/Users/UserDetailsPage.vue'
 import ChangePasswordPage from '@/components/organisms/Users/ChangePasswordPage.vue'
 
-import ProductsPage from '@/components/organisms/ProductsPage.vue'
-import ProductsList from '@/components/organisms/ProductsList.vue'
-import NewProductPage from '@/components/organisms/NewProductPage.vue'
+import ProductsPage from '@/components/organisms/Products/ProductsPage.vue'
+import ProductsList from '@/components/organisms/Products/ProductsList.vue'
+import NewProductPage from '@/components/organisms/Products/NewProductPage.vue'
 
 import OrdersPage from '@/components/organisms/OrdersPage.vue'
 

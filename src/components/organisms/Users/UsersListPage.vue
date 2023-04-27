@@ -1,7 +1,5 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-  <v-snackbar v-model="snackbar">Usuário criado com sucesso</v-snackbar>
-
   <HeaderListComponent
     add-to-router-name="NewUser"
     @filter-value="handleFilterUpdate"
@@ -57,6 +55,7 @@ const headers = [
   { title: 'Noma de Usuário', key: 'username' },
   { title: 'Posição', key: 'role' },
   { title: 'Criado em', key: 'createdAt' },
+  { title: '', key: '' },
   { title: '', key: 'actions' }
 ]
 const itemsPerPage = 20
@@ -69,7 +68,6 @@ const screenHeight = ref<number>(window.innerHeight)
 const userList = ref<User[]>([])
 const filter = ref<'active' | 'disabled'>('active')
 const isLoadingData = ref(false)
-const snackbar = ref(false)
 
 const tableHeight = computed(() => screenHeight.value - 265)
 

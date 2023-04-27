@@ -1,27 +1,8 @@
 <!-- eslint-disable vue/valid-v-slot -->
 <template>
-  <div class="flex justify-between">
-    <div class="w-[600px] h-full flex gap-4">
-      <v-text-field
-        bg-color="#fff"
-        variant="outlined"
-        density="compact"
-        :type="filterInputType"
-        placeholder="Adicione o filtro"
-        prepend-inner-icon="mdi-magnify"
-        v-model="filter"
-      ></v-text-field>
-      <v-select
-        placeholder="Filtro"
-        :items="['Código', 'Nome']"
-        variant="outlined"
-        density="compact"
-        bg-color="#E5E5E5"
-        class="max-w-[150px]"
-        v-model:model-value="filterType"
-      ></v-select>
-    </div>
-    <RouterLink :to="{ name: 'NewCustomer' }">
+  <div class="flex justify-between h-[62px]">
+    <div class="w-[600px] h-full flex gap-4"></div>
+    <RouterLink :to="{ name: 'NewProduct' }">
       <div class="flex gap-4">
         <v-btn variant="outlined" class="bg-white">
           <v-icon icon="mdi-plus-box-outline" size="x-large" class="mr-3"></v-icon>
@@ -35,9 +16,9 @@
     <v-data-table-server
       v-model:page="page"
       :headers="headers"
-      :items="customersList"
+      :items="productsInfoList"
       :items-per-page="itemsPerPage"
-      :items-length="customersList.length"
+      :items-length="productsInfoList.length"
       fixed-header
       :height="tableHeight"
       :loading="isLoadingData"
@@ -62,10 +43,10 @@ import { ref, computed, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { VDataTableServer } from 'vuetify/labs/VDataTable'
-
-import type { Customer } from '@/dtos/customer'
-import { getCustomersList } from '@/repositories/customer'
 import ParagraphComponent from '@/components/atoms/ParagraphComponent.vue'
+
+import { getProductsInfoList } from '@/repositories/products-info'
+import type { ProductInfo } from '@/dtos/products-info'
 
 const headers = [
   { title: 'Código', key: 'code', maxWidth: '200px' },
@@ -73,9 +54,9 @@ const headers = [
     title: 'Nome',
     key: 'name'
   },
-  { title: 'Nome fantasia', key: 'fantasyName' },
-  { title: 'Endereço', key: 'address' },
-  { title: 'Cidade', key: 'city' },
+  { title: 'Grupo', key: 'group' },
+  { title: 'Unidade', key: 'unit' },
+  { title: 'Preço', key: 'price' },
   { title: '', key: 'actions' }
 ]
 const itemsPerPage = 20
@@ -87,17 +68,8 @@ const page = ref(1)
 const screenHeight = ref<number>(window.innerHeight)
 const screenWidth = ref<number>(window.innerWidth)
 
-const customersList = ref<Customer[]>([])
-const filter = ref<string>()
-const filterType = ref<'Código' | 'Nome'>()
+const productsInfoList = ref<ProductInfo[]>([])
 const isLoadingData = ref(false)
-
-const filterInputType = computed(() => {
-  if (filterType.value === 'Código') {
-    return 'number'
-  }
-  return 'text'
-})
 
 const tableHeight = computed(() => screenHeight.value - 265)
 const contentWidth = computed(() => `${screenWidth.value - 335}px`)
@@ -114,17 +86,15 @@ function goToCustomerDetails(item: any) {
 watchEffect(async () => {
   isLoadingData.value = true
   try {
-    const customers: Customer[] = await getCustomersList(filter.value, filterType.value)
+    const productsInfo: ProductInfo[] = await getProductsInfoList()
 
-    console.log(customers)
-
-    customersList.value = customers.map((customer) => {
+    productsInfoList.value = productsInfo.map((productInfo) => {
       return {
-        ...customer
+        ...productInfo
       }
     })
 
-    numberOfPage = (customersList.value.length || 1) / itemsPerPage + 1
+    numberOfPage = (productsInfoList.value.length || 1) / itemsPerPage + 1
   } catch (error) {
     console.log(error)
   } finally {

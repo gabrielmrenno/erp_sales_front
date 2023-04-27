@@ -1,5 +1,5 @@
 <template>
-  <header class="flex justify-between">
+  <header class="flex justify-between h-[62px]">
     <div class="flex gap-4">
       <v-btn
         variant="outlined"
