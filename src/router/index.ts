@@ -18,7 +18,10 @@ import ProductsList from '@/components/organisms/Products/ProductsList.vue'
 import NewProductPage from '@/components/organisms/Products/NewProductPage.vue'
 import ProductDetailsPage from '@/components/organisms/Products/ProductDetailsPage.vue'
 
-import OrdersPage from '@/components/organisms/OrdersPage.vue'
+import OrdersPage from '@/components/organisms/Orders/OrdersPage.vue'
+import OrdersListPage from '@/components/organisms/Orders/OrdersListPage.vue'
+import NewOrderPage from '@/components/organisms/Orders/NewOrderPage.vue'
+import OrderDetailsPage from '@/components/organisms/Orders/OrderDetailsPage.vue'
 
 import CustomersPage from '@/components/organisms/Customers/CustomersPage.vue'
 import CustomersListPage from '@/components/organisms/Customers/CustomersListPage.vue'
@@ -100,7 +103,37 @@ const router = createRouter({
           meta: {
             protected: true,
             permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
-          }
+          },
+          children: [
+            {
+              path: '',
+              name: 'OrdersList',
+              component: OrdersListPage,
+              meta: {
+                protected: true,
+                permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+              }
+            },
+            {
+              path: 'novo',
+              name: 'NewOrder',
+              component: NewOrderPage,
+              meta: {
+                protected: true,
+                permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+              }
+            },
+            {
+              path: ':id',
+              name: 'OrderDetails',
+              component: OrderDetailsPage,
+              props: true,
+              meta: {
+                protected: true,
+                permissions: [UsersRoles.ADMIN, UsersRoles.SELLER]
+              }
+            }
+          ]
         },
         {
           path: 'perfil',

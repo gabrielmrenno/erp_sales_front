@@ -1,5 +1,5 @@
 <template>
-  <div>Pedidos</div>
+  <div>Novo Pedido</div>
 </template>
 
 <script setup lang="ts"></script>

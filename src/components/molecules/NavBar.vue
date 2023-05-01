@@ -18,7 +18,7 @@
 
       <v-list-item
         router-link
-        :to="{ name: 'Orders' }"
+        :to="{ name: 'OrdersList' }"
         exact-active-class="v-list-item--active"
         prepend-icon="mdi-cart-outline"
         title="Pedidos"
