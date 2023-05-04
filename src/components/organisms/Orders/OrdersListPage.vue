@@ -52,6 +52,9 @@
 <script setup lang="ts">
 import { ref, computed, watchEffect } from 'vue'
 import { useRouter } from 'vue-router'
+import dayjs from 'dayjs'
+import localizedFormat from 'dayjs/plugin/localizedFormat'
+import 'dayjs/locale/pt-br'
 
 import { VDataTableServer } from 'vuetify/labs/VDataTable'
 
@@ -65,7 +68,10 @@ interface OrdersTable {
   city: string
   paymentStatus: string
   totalOrderValue: string
+  createdAt: string
 }
+
+dayjs.extend(localizedFormat)
 
 const headers = [
   { title: 'Código', key: 'id', maxWidth: '200px' },
@@ -76,6 +82,7 @@ const headers = [
   { title: 'Cidade', key: 'city' },
   { title: 'Status', key: 'paymentStatus' },
   { title: 'Valor', key: 'totalOrderValue' },
+  { title: 'Data', key: 'createdAt' },
   { title: '', key: 'actions' }
 ]
 const itemsPerPage = 20
@@ -118,7 +125,8 @@ watchEffect(async () => {
         paymentStatus: order.paymentStatus,
         totalOrderValue: `R$ ${order.totalOrderValue.toFixed(2)}`,
         customer: order.customer.fantasyName,
-        city: order.customer.city
+        city: order.customer.city,
+        createdAt: dayjs(order.createdAt).locale('pt-br').format('DD/MM/YY')
       }
     })
 

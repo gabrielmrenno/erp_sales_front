@@ -27,3 +27,26 @@ export interface ICompleteOrder extends Order {
   totalOrderValue: number
   totalOrderWeight: number
 }
+
+interface CreateOrderedProducts {
+  amount: number
+  productInfoCode: number
+}
+
+export interface ICreateOrderDTO {
+  items: CreateOrderedProducts[]
+  customerCode: number
+  userId: string
+}
+
+export interface IUpdateOrderDTO {
+  orderId: number
+
+  deliveryDate: Date | null
+  customerCode: number
+  userId: string
+  paymentStatus: string
+  paymentDate: Date | null
+
+  OrderedProducts: OrderedProducts[]
+}

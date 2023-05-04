@@ -1,15 +1,13 @@
 <template>
-  <v-card>
-    <v-layout class="bg-[#F9F9EE] h-screen">
-      <NavBar />
-      <v-main class="my-8 mx-10">
-        <HeaderComponent class="mb-8" />
-        <main class="h-full max-w-full">
-          <RouterView></RouterView>
-        </main>
-      </v-main>
-    </v-layout>
-  </v-card>
+  <v-layout class="bg-[#F9F9EE]">
+    <NavBar />
+    <v-main class="my-8 mx-10">
+      <HeaderComponent class="mb-8" />
+      <main class="max-w-full">
+        <RouterView></RouterView>
+      </main>
+    </v-main>
+  </v-layout>
 </template>
 
 <script setup lang="ts">

@@ -1,16 +1,21 @@
 export interface Customer {
   code?: number
   name: string
+
   fantasyName: string
   doc: string
+
   email: string
   phone: string
   contactName: string
+
   address: string
   city: string
   zipCode: string
+
   discount: number
   paymentTerm: number
+  
   active: boolean
   createdAt: Date
   updatedAt: Date

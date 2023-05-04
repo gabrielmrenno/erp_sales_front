@@ -1,4 +1,4 @@
-import type { ICreateCustomerDTO, IUpdateCustomerDTO } from '@/dtos/customer'
+import type { ICreateOrderDTO, IUpdateOrderDTO } from '@/dtos/order'
 import { useClient } from './axiosClient'
 import qs from 'qs'
 
@@ -12,31 +12,27 @@ interface GetOrdersListRequest {
 export async function getOrdersList(queryParams: GetOrdersListRequest) {
   const queryString = qs.stringify(queryParams, { encode: false })
   console.log(queryString)
+
   const response = await useClient().get(`/orders/all?${queryString}`)
   return response.data.orders
 }
 
-export async function getInfoByCNPJRequest(doc: string) {
-  const response = await useClient().get(`/customers/getInfo/${doc}`)
-  return response.data
-}
-
-export async function createCustomerRequest(data: ICreateCustomerDTO) {
-  const response = await useClient().post('/customers', data)
+export async function createOrderRequest(data: ICreateOrderDTO) {
+  const response = await useClient().post('/orders', data)
   return response
 }
 
-export async function getCustomerDetails(code: number) {
-  const response = await useClient().get(`/customers/customer/${code}`)
+export async function getOrderDetails(code: number) {
+  const response = await useClient().get(`/orders/Order/${code}`)
   return response.data
 }
 
-export async function editCustomer(data: IUpdateCustomerDTO) {
-  const response = await useClient().put(`/customers/${data.code}`, data)
+export async function editOrder(data: IUpdateOrderDTO) {
+  const response = await useClient().put(`/orders/${data.orderId}`, data)
   return response.data
 }
 
-export async function deleteCustomer(code: number) {
-  const response = await useClient().delete(`/customers/${code}`)
+export async function deleteOrder(code: number) {
+  const response = await useClient().delete(`/orders/${code}`)
   return response.data
 }

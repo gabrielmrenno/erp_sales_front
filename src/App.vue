@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="h-screen overflow-y-auto overflow-x-hidden">
     <notifications class="my-notification" position="bottom center" />
     <RouterView />
   </main>
