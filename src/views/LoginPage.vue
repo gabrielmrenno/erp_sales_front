@@ -87,7 +87,7 @@ async function submitLoginForm() {
       return
     }
 
-    router.push({ name: 'Panel' })
+    router.push({ name: 'OrdersList' })
   } catch (error) {
     isInvalidFormSubmit.value = true
     if (error instanceof AxiosError) {

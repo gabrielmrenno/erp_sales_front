@@ -13,6 +13,7 @@
         prepend-icon="mdi-package-variant-closed"
         title="Produtos"
         value="produtos"
+        v-if="hasPermission([UsersRoles.ADMIN, UsersRoles.SELLER])"
       >
       </v-list-item>
 
@@ -23,6 +24,7 @@
         prepend-icon="mdi-cart-outline"
         title="Pedidos"
         value="pedidos"
+        v-if="hasPermission([UsersRoles.ADMIN, UsersRoles.SELLER])"
       >
       </v-list-item>
 
@@ -33,6 +35,7 @@
         prepend-icon="mdi-account"
         title="Usuários"
         value="usuários"
+        v-if="hasPermission([UsersRoles.ADMIN])"
       >
       </v-list-item>
 
@@ -43,12 +46,16 @@
         prepend-icon="mdi-storefront"
         title="Clientes"
         value="clientes"
+        v-if="hasPermission([UsersRoles.ADMIN, UsersRoles.SELLER])"
       >
       </v-list-item>
     </v-list>
   </v-navigation-drawer>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { UsersRoles } from '@/utils/enum'
+import { hasPermission } from '@/utils/permissions'
+</script>
 
 <style scoped></style>

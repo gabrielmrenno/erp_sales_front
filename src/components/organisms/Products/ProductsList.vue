@@ -2,7 +2,7 @@
 <template>
   <div class="flex justify-between h-[62px]">
     <div class="w-[600px] h-full flex gap-4"></div>
-    <RouterLink :to="{ name: 'NewProduct' }">
+    <RouterLink :to="{ name: 'NewProduct' }" v-if="hasPermission([UsersRoles.ADMIN])">
       <div class="flex gap-4">
         <v-btn variant="outlined" class="bg-white">
           <v-icon icon="mdi-plus-box-outline" size="x-large" class="mr-3"></v-icon>
@@ -47,6 +47,8 @@ import ParagraphComponent from '@/components/atoms/ParagraphComponent.vue'
 
 import { getProductsInfoList } from '@/repositories/products-info'
 import type { ProductInfo } from '@/dtos/products-info'
+import { hasPermission } from '@/utils/permissions'
+import { UsersRoles } from '@/utils/enum'
 
 const headers = [
   { title: 'Código', key: 'code', maxWidth: '200px' },
@@ -80,7 +82,9 @@ function resizeTable() {
 }
 
 function goToCustomerDetails(item: any) {
-  router.push({ name: 'ProductDetails', params: { id: Number(item.value.code) } })
+  if (hasPermission([UsersRoles.ADMIN])) {
+    router.push({ name: 'ProductDetails', params: { id: Number(item.value.code) } })
+  }
 }
 
 watchEffect(async () => {
