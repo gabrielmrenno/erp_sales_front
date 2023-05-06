@@ -33,6 +33,6 @@ export async function editOrder(data: IUpdateOrderDTO) {
 }
 
 export async function deleteOrder(code: number) {
-  const response = await useClient().delete(`/orders/${code}`)
+  const response = await useClient().delete(`/orders/order/${code}`)
   return response.data
 }

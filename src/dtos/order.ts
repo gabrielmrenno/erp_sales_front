@@ -13,7 +13,7 @@ interface Order {
   deletedAt: Date | null
 }
 
-interface OrderedProducts {
+export interface OrderedProducts {
   orderId: number
   productInfoCode: number
   amount: number

@@ -153,7 +153,7 @@ async function deleteProductFunction() {
 
     notify({
       title: 'Successo',
-      text: 'Cliente deletado com sucesso',
+      text: 'Produto deletado com sucesso',
       type: 'success'
     })
 

@@ -180,7 +180,6 @@ const headers = [
   },
   { title: 'Quantidade', key: 'amount' },
   { title: 'Valor', key: 'productPrice' },
-  { title: 'Desconto', key: 'discount' },
   { title: 'Valor total', key: 'totalValue' },
   { title: '', key: 'actions' }
 ]

@@ -27,14 +27,6 @@
           placeholder="Quantidade"
           v-model="amount"
         ></v-text-field>
-        <v-text-field
-          bg-color="#fff"
-          variant="outlined"
-          density="compact"
-          type="number"
-          placeholder="Desconto"
-          v-model="discount"
-        ></v-text-field>
       </div>
     </v-card-text>
     <v-card-actions class="flex justify-end">
@@ -53,7 +45,6 @@ interface ShowProduct {
   productInfoCode: number
   name: string
   amount: number
-  discount: number
   productPrice: number
   productWeight: number
   totalValue: number
@@ -63,7 +54,6 @@ const emit = defineEmits(['confirmAction'])
 
 const isLoadingData = ref(false)
 const productsList = ref<ProductInfo[]>([])
-const discount = ref<number>()
 const amount = ref<number>()
 const selectedProductName = ref<string>()
 
@@ -92,10 +82,9 @@ function addProduct() {
       productInfoCode: selectedProduct.code,
       productPrice: selectedProduct.price,
       amount: amount.value!,
-      discount: discount.value!,
       productWeight: selectedProduct.weight,
       name: selectedProduct.name,
-      totalValue: selectedProduct.price * amount.value! * (1 - discount.value! / 100)
+      totalValue: selectedProduct.price * amount.value!
     }
   }
   emit('confirmAction', returnedProductSelected)
