@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="bg-[#F9F9EE]">
+  <v-layout class="bg-[#F9F9EE] w-screen h-screen">
     <NavBar />
     <v-main class="my-8 mx-10">
       <HeaderComponent class="mb-8" />

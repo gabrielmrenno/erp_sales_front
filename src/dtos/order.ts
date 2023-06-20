@@ -21,6 +21,28 @@ export interface OrderedProducts {
   productWeight: number
 }
 
+export interface UpdateOrderedProducts {
+  amount: number
+  productInfoCode: number
+}
+
+export interface OrderedProductsGetOrder {
+  orderId: number
+  productInfoCode: number
+  amount: number
+  productPrice: number
+  productWeight: number
+  Product: Product
+}
+
+export interface Product {
+  amount: number
+  createdAt: Date
+  id: string
+  productBatch: string
+  productInfoCode: number
+}
+
 export interface ICompleteOrder extends Order {
   OrderedProducts: OrderedProducts[]
   customer: Customer
@@ -48,5 +70,5 @@ export interface IUpdateOrderDTO {
   paymentStatus: string
   paymentDate: Date | null
 
-  OrderedProducts: OrderedProducts[]
+  items: UpdateOrderedProducts[]
 }

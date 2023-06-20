@@ -105,15 +105,39 @@
           </div>
         </div>
         <div class="mt-6" v-resize="resizeTable">
+          <h2 class="text-[1.25rem] leading-[2.625rem] font-bold">Produtos pedido</h2>
           <v-data-table
             v-model:page="page"
             :headers="headers"
-            :items="productList"
+            :items="groupedProducts"
             :items-per-page="itemsPerPage"
-            :items-length="productList.length"
+            :items-length="groupedProducts.length"
             fixed-header
             :loading="isLoadingData"
             @click:row="(_, { item }) => goToProductDetails(item.value)"
+          >
+            <template #item.actions>
+              <div class="flex justify-center gap-7 text-[#555]">
+                <VIcon icon="mdi-chevron-right"></VIcon>
+              </div>
+            </template>
+            <template v-slot:bottom>
+              <div class="bg-[#F9F9EE] pt-4 flex justify-end">
+                <v-pagination v-model="page" :length="numberOfPage" rounded="circle"></v-pagination>
+              </div>
+            </template>
+          </v-data-table>
+        </div>
+        <div class="mt-6" v-resize="resizeTable">
+          <h2 class="text-[1.25rem] leading-[2.625rem] font-bold">Produtos faltando</h2>
+          <v-data-table
+            v-model:page="page"
+            :headers="headersMissingProducts"
+            :items="missingProductList"
+            :items-per-page="itemsPerPage"
+            :items-length="missingProductList.length"
+            fixed-header
+            :loading="isLoadingData"
           >
             <template #item.actions>
               <div class="flex justify-center gap-7 text-[#555]">
@@ -160,24 +184,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineProps } from 'vue'
 import { notify } from '@kyvg/vue3-notification'
+import { computed, defineProps, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { getOrderDetails, editOrder, deleteOrder } from '@/repositories/order'
-import { VDataTable } from 'vuetify/labs/VDataTable'
-import { getProductsInfoList } from '@/repositories/products-info'
 import type { Customer } from '@/dtos/customer'
-import type { OrderedProducts } from '@/dtos/order'
+import type { UpdateOrderedProducts, OrderedProductsGetOrder } from '@/dtos/order'
+import { deleteOrder, editOrder, getOrderDetails } from '@/repositories/order'
+import { getProductsInfoList } from '@/repositories/products-info'
+import { VDataTable } from 'vuetify/labs/VDataTable'
 
 import ParagraphComponent from '@/components/atoms/ParagraphComponent.vue'
-import FormHeader from '@/components/molecules/FormHeader.vue'
 import AddCostumerModal from '@/components/molecules/AddCustomerModal.vue'
 import AddProductModal from '@/components/molecules/AddProductModal.vue'
-import EditProductModal from '@/components/molecules/EditProductModal.vue'
-import { watchEffect } from 'vue'
-import { getLocalStorage } from '@/repositories/axiosClient'
 import ConfirmActionModal from '@/components/molecules/ConfirmActionModal.vue'
+import EditProductModal from '@/components/molecules/EditProductModal.vue'
+import FormHeader from '@/components/molecules/FormHeader.vue'
+import { getLocalStorage } from '@/repositories/axiosClient'
+import { watchEffect } from 'vue'
 
 interface ShowProduct {
   productInfoCode: number
@@ -212,11 +236,22 @@ const headers = [
   { title: 'Valor total', key: 'totalValue' },
   { title: '', key: 'actions' }
 ]
+
+const headersMissingProducts = [
+  { title: 'Código', key: 'productInfoCode' },
+  {
+    title: 'Nome',
+    key: 'name'
+  },
+  { title: 'Quantidade', key: 'amount' }
+]
 const itemsPerPage = 20
 let numberOfPage: number
 
 const screenHeight = ref<number>(window.innerHeight)
 const productList = ref<ShowProduct[]>([])
+const missingProductList = ref<ShowProduct[]>([])
+const groupedProducts = ref<ShowProduct[]>([])
 const selectedProduct = ref<ShowProduct>({} as ShowProduct)
 const isLoadingData = ref(false)
 const showAddCustomerModal = ref(false)
@@ -235,20 +270,48 @@ watchEffect(async () => {
     const responseData = await getOrderDetails(props.id)
     const products = await getProductsInfoList()
 
-    console.log(responseData)
-
     customer.value = responseData.order.customer
-    productList.value = responseData.order.OrderedProducts.map((product: OrderedProducts) => {
-      return {
-        amount: product.amount,
-        discount: 0,
-        name: products.find((prod) => prod.code === product.productInfoCode)!.name,
-        productInfoCode: product.productInfoCode,
-        productPrice: product.productPrice,
-        productWeight: product.productWeight,
-        totalValue: product.amount * product.productPrice
+    productList.value = responseData.order.OrderedProducts.map(
+      (product: OrderedProductsGetOrder) => {
+        return {
+          amount: product.amount,
+          discount: 0,
+          name: products.find((prod) => prod.code === product.Product.productInfoCode)!.name,
+          productInfoCode: product.Product.productInfoCode,
+          productPrice: product.productPrice,
+          productWeight: product.productWeight,
+          totalValue: product.amount * product.productPrice
+        }
       }
-    })
+    )
+    missingProductList.value = responseData.order.MissingProducts.map(
+      (missingProduct: OrderedProductsGetOrder) => {
+        const productInfo = products.find((prod) => prod.code === missingProduct.productInfoCode)
+        return {
+          name: productInfo!.name,
+          productInfoCode: missingProduct.productInfoCode,
+          productPrice: productInfo!.price,
+          productWeight: productInfo!.weight,
+          discount: 0,
+          totalValue: missingProduct.amount * productInfo!.price,
+          amount: missingProduct.amount
+        }
+      }
+    )
+
+    // create an array that is missingProducts + productsList
+    const allProducts = [...missingProductList.value, ...productList.value]
+    //group by productInfoCode
+    groupedProducts.value = allProducts.reduce((acc, cur) => {
+      const found = acc.find((item) => item.productInfoCode === cur.productInfoCode)
+      if (found) {
+        found.amount += cur.amount
+        found.totalValue += cur.totalValue
+      } else {
+        acc.push({ ...cur })
+      }
+      return acc
+    }, [] as ShowProduct[])
   } catch (error) {
     console.log(error)
   }
@@ -266,15 +329,15 @@ function setCustomer(data: Customer) {
 }
 
 function setProductList(data: ShowProduct) {
-  productList.value.push(data)
+  groupedProducts.value.push(data)
   showAddProductModal.value = false
 }
 
 function editProductList(data: ShowProduct) {
-  const productIndex = productList.value.findIndex(
+  const productIndex = groupedProducts.value.findIndex(
     (product) => product.productInfoCode === data.productInfoCode
   )
-  productList.value[productIndex] = data
+  groupedProducts.value[productIndex] = data
 
   showEditProductModal.value = false
 }
@@ -300,19 +363,18 @@ async function submitCreateOrder() {
   const { idUser } = getLocalStorage()
 
   try {
-    const productListFormatted: OrderedProducts[] = productList.value.map((product) => {
-      return {
-        orderId: Number(props.id),
-        productInfoCode: Number(product.productInfoCode),
-        amount: Number(product.amount),
-        productPrice: Number(product.productPrice),
-        productWeight: Number(product.productWeight)
+    const groupedProductsFormatted: UpdateOrderedProducts[] = groupedProducts.value.map(
+      (product) => {
+        return {
+          productInfoCode: Number(product.productInfoCode),
+          amount: Number(product.amount)
+        }
       }
-    })
+    )
     await editOrder({
       customerCode: customer.value.code!,
       deliveryDate: null,
-      OrderedProducts: productListFormatted,
+      items: groupedProductsFormatted,
       orderId: props.id,
       paymentDate: new Date(), // TODO: today plus paymentTerm
       paymentStatus: 'pendent',
